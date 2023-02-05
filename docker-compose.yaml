@@ -1,8 +1,11 @@
 services:
   emacs:
     image: emacs-devcontainer:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - .:/workspaces/emacs-devcontainer:rw,Z
+      - .:/workspaces/source:rw,Z
     command: /bin/sh -c "emacs --fg-daemon"
 volumes:
   .:

@@ -7,7 +7,7 @@
 	"service": "emacs",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
-	"workspaceFolder": "/workspaces/emacs-devcontainer",
+	"workspaceFolder": "/home/vscode/workspaces/",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 

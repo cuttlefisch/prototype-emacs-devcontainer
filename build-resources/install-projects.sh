@@ -10,8 +10,7 @@ EOF
 # Configure emacs daemon to run project installation at startup
 cat <<EOF >>/home/vscode/.emacs.d/init.el
 ;; Install declarative project mode
-(use-package declarative-project-mode
-    :straight '(declarative-project-mode
+(straight-use-package '(declarative-project-mode
                 :type git
                 :host github
                 :repo "cuttlefisch/declarative-project-mode")

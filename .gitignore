@@ -1,2 +1,3 @@
-AGENDA.org
-ROAM.org
+PROJECT.yaml
+*.org
+!README.org

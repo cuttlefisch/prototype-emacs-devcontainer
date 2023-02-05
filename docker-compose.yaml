@@ -15,5 +15,13 @@ services:
     volumes:
       - .:/workspaces/source:rw,Z
     command: /bin/sh -c "emacs --fg-daemon"
+  emacs-devcontainer-projects:
+    image: emacs-devcontainer-doom:latest
+    build:
+      context: .
+      dockerfile: images/doom/Dockerfile
+    volumes:
+      - .:/workspaces/source:rw,Z
+    command: /bin/sh -c "emacs --fg-daemon"
 volumes:
   .:

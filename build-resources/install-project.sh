@@ -40,8 +40,8 @@ cat <<EOF >>/home/vscode/.emacs.d/init.el
     :straight '(declarative-project-mode
                 :type git
                 :host github
-                :repo "cuttlefisch/declarative-project-mode"
-                :files "declarative-project-mode.el"))
+                :repo "cuttlefisch/declarative-project-mode"))
+                ;:files "declarative-project-mode.el")
 ;; END INSTALL DEPENCIES
 
 ;; CONFIGURE PACKAGES

@@ -15,6 +15,7 @@ cat <<EOF >>/home/vscode/.emacs.d/init.el
                 :host github
                 :repo "cuttlefisch/declarative-project-mode"
                 :files (:defaults "declarative-project-mode.el")))
+(use-package declarative-project-mode
     :config
       (setq declarative-project--clobber t)
       (setq declarative-project--persist-agenda-files t)

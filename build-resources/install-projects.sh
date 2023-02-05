@@ -14,8 +14,11 @@ cat <<EOF >>/home/vscode/.emacs.d/init.el
     :straight '(declarative-project-mode
                 :type git
                 :host github
-                :repo "cuttlefisch/declarative-project-mode"))
-                ;:files "declarative-project-mode.el")
+                :repo "cuttlefisch/declarative-project-mode")
+    :config
+      (setq declarative-project--clobber t)
+      (setq declarative-project--persist-agenda-files t)
+      (setq declarative-project--auto-prune-cache t))
 ;; END INSTALL DEPENCIES
 
 ;; CONFIGURE PACKAGES

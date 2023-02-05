@@ -17,7 +17,7 @@ RUN sudo apt-get update && sudo apt-get upgrade -y \
     && sudo make install \
     && sudo rm -rf /tmp/emacs
 
-RUN git clone https://github.com/cuttlefisch/declarative-project-mode --branch project-install-experiments /tmp/provisioning \
+RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer --branch project-install-experiments /tmp/provisioning \
     && cd /tmp/provisioning \
     && cd /tmp/provisioning \
     && sh build-resources/install-project.sh \

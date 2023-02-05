@@ -21,6 +21,7 @@ cat <<EOF >>/home/vscode/.emacs.d/init.el
 ;; CONFIGURE PACKAGES
 ;; ---------------------------------------------
 (declarative-project-mode) ;; enable global declarative project mode
-(when-let ((project-spec (file-exists-p "/workspaces/source/PROJECT.yaml")))
-    (declarative-project--install-project project-spec))
+(let ((default-project-file  "/workspaces/source/PROJECT.yaml"))
+    (when (file-exists-p default-project-file)
+        (declarative-project--install-project default-project-file))
 EOF

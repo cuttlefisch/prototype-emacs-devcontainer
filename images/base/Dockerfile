@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.5-labs
 FROM mcr.microsoft.com/vscode/devcontainers/base:debian
     MAINTAINER Hayden Stanko <hayden@cuttle.codes>
 
@@ -20,7 +19,7 @@ RUN sudo apt-get update && sudo apt-get upgrade -y \
 RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer --branch project-install-experiments /tmp/provisioning \
     && cd /tmp/provisioning \
     && cd /tmp/provisioning \
-    && sh build-resources/install-project.sh \
+    && sh build-resources/install-base.sh \
     && rm -rf /tmp/provisioning
 
 

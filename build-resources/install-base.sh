@@ -34,19 +34,4 @@ cat <<EOF >>/home/vscode/.emacs.d/init.el
 ;; Ensure all packages are installed by default
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
-
-;; Install declarative project mode
-(use-package declarative-project-mode
-    :straight '(declarative-project-mode
-                :type git
-                :host github
-                :repo "cuttlefisch/declarative-project-mode"))
-                ;:files "declarative-project-mode.el")
-;; END INSTALL DEPENCIES
-
-;; CONFIGURE PACKAGES
-;; ---------------------------------------------
-(declarative-project-mode) ;; enable global declarative project mode
-(when-let ((project-spec (file-exists-p "/workspaces/source/PROJECT.yaml")))
-    (declarative-project--install-project project-spec))
 EOF

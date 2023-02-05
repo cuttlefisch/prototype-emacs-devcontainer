@@ -1,0 +1,8 @@
+services:
+  emacs:
+    image: emacs-devcontainer:latest
+    volumes:
+      - .:/workspaces/emacs-devcontainer:rw,Z
+    command: /bin/sh -c "emacs --fg-daemon"
+volumes:
+  .:

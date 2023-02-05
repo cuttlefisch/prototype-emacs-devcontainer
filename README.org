@@ -1,0 +1,32 @@
+* Emacs Devcontainer
+
+This experimental Docker image & its compose file stand up a VS Code devcontainer with the
+latest Emacs build running as a daemon. The intended use-case is an integrated Emacs/VS
+Code devcontainer experience, leveraging Emac's extensive existing workflow tooling to
+provide enhanced functionality around workspace management.
+
+*NOTE:* This project does not yet implement the [[https://containers.dev/implementors/spec/][Open Development Container Specification]].
+
+* Basic Usage
+
+- Update the ~volumes~ specification to the absolute path to this directory.
+- Open the ~.devcontainer~ configuration files in VS Code
+
+* Declarative Project Mode
+This project serves as the base for devcontainer definitions generated through
+[[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], a global mode that allows Emacs to install generalized
+"projects" that create a reproducable development environment.
+
+Integration with devcontainers means installation & maintenance of projects via Emacs
+becomes a matter of calling elisp commands either via command-line or another conventient
+interface, and VS Code users can gain many benefits of emac's extensibility without the
+complexity of configuring, running, and maintianing it themselves.
+
+*But!* The resulting configuration serves as a starting point for reproducable
+containerized Emacs workspaces via devcontainers in the same manner. Declarative Project
+Mode will likely generate an Emacs-specific devcontainer configuration as the project
+matures.
+
+* Resources
+ - Check out [[https://github.com/doomemacs/doomemacs][Doom Emacs]] if you're curious about Emacs and want to get up and running
+   quickly!

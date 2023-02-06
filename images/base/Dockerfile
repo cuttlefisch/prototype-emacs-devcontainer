@@ -16,6 +16,13 @@ RUN sudo apt-get update && sudo apt-get upgrade -y \
     && sudo make install \
     && sudo rm -rf /tmp/emacs
 
+RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer --branch project-install-experiments /tmp/provisioning \
+    && cd /tmp/provisioning \
+    && cd /tmp/provisioning \
+    && sh build-resources/install-base.sh \
+    && rm -rf /tmp/provisioning
+
+RUN mkdir /home/vscode/workspaces
+
 VOLUME ["/workspaces"]
-VOLUME ["/home/vscode/workspaces"]
 CMD ["/bin/sh", "-c", "emacs", "--fg-daemon"]

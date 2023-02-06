@@ -12,6 +12,35 @@ provide enhanced functionality around workspace management.
 - Update the ~volumes~ specification to the absolute path to this directory.
 - Open the ~.devcontainer~ configuration files in VS Code
 
+By default ~PROJECT.yaml~ is installed via [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], providing a workspace
+to edit this repository, along with ~declarative-project-mode~'s.
+
+Change to ~emacs-devcontainer-base~ or ~emacs-devcontainer-doom~ within
+~.devcontainer/devcontainer.js~ to start with an empty workspace.
+
+* Provided Images
+** Base
+Simple Emacs daemon with the [[https://github.com/radian-software/straight.el][straight.el]] package manager installed for simpler declarative
+configuration.
+
+example reference: ~emacs-devcontainer-base:latest~
+
+** Doom
+Emacs daemon with [[https://github.com/doomemacs/doomemacs][Doom Emacs]] installed. Useful for testing with more comforts, but needs
+review of how it obliterates ~init.el~.
+
+example reference: ~emacs-devcontainer-doom:latest~
+
+** Projects
+Emacs daemon that installs a default project file at ~/workspaces/source/PROJECT.el~ or
+any projects installed while the daemon runs. Instructions on this will follow, but the
+elisp call to do so is ~(declarative-project--install-project
+"/workspaces/source/PROJECT.el")~ substituting the desired path for the default.
+
+See the later section for declarative project mode details.
+
+example reference: ~emacs-devcontainer-projects:latest~
+
 * Declarative Project Mode
 This project serves as the base for devcontainer definitions generated through
 [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], a global mode that allows Emacs to install generalized

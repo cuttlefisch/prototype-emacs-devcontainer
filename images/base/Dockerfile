@@ -22,6 +22,7 @@ RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer --bran
     && sh build-resources/install-base.sh \
     && rm -rf /tmp/provisioning
 
+RUN mkdir /home/vscode/workspaces
 
 VOLUME ["/workspaces"]
 CMD ["/bin/sh", "-c", "emacs", "--fg-daemon"]

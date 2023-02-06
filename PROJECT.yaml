@@ -1,0 +1,7 @@
+name: "Emacs Containerized Devcontainers"
+root-directory: "/home/vscode/workspaces/emacs-devcontainers"
+deps:
+  - src: https://github.com/cuttlefisch/declarative-project-mode
+  - src: https://github.com/cuttlefisch/prototype-emacs-devcontainer
+required-resources:
+  - README.org

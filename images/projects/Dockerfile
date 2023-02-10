@@ -6,7 +6,7 @@ ENV NO_AT_BRIDGE=1
 ENV DEBIAN_FRONTEND noninteractive
 
 USER vscode:vscode
-RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer --branch project-install-experiments /tmp/provisioning \
+RUN git clone https://github.com/cuttlefisch/prototype-emacs-devcontainer /tmp/provisioning \
     && cd /tmp/provisioning \
     && cd /tmp/provisioning \
     && sh build-resources/install-projects.sh \

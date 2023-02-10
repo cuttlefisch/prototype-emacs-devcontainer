@@ -9,8 +9,11 @@ provide enhanced functionality around workspace management.
 
 * Basic Usage
 
-- Update the ~volumes~ specification to the absolute path to this directory.
-- Open the ~.devcontainer~ configuration files in VS Code
+ - Update the ~volumes~ specification to the absolute path to this directory.
+ - Open the ~.devcontainer~ configuration files in VS Code
+ - [[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token][Create a personal access token]] for storage in ~config/authinfo~
+     - See ~config/AUTHINFO_EXAMPLE~ for the file format
+     - *Token is stored in plaintext at this stage of development.*
 
 By default ~PROJECT.yaml~ is installed via [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], providing a workspace
 to edit this repository, along with ~declarative-project-mode~'s.
@@ -18,19 +21,70 @@ to edit this repository, along with ~declarative-project-mode~'s.
 Change to ~emacs-devcontainer-base~ or ~emacs-devcontainer-doom~ within
 ~.devcontainer/devcontainer.js~ to start with an empty workspace.
 
+* Install a Project
+Install an example project resulting in this development environment in a fresh
+devcontainer.
+#+begin_src bash
+vscode ➜ ~/workspaces $ tree
+.
+├── declarative-project-mode
+│   ├── declarative-project-mode.el
+│   ├── declarative-project-mode-test.el
+│   ├── LICENSE
+│   ├── README.org
+│   └── test
+│       ├── local-file.txt
+│       ├── symlink-target.txt
+│       ├── test-file-present.txt
+│       └── test-project.yaml
+├── PROJECT.yaml
+├── prototype-emacs-devcontainer
+│   ├── build-resources
+│   │   ├── install-base.sh
+│   │   └── install-projects.sh
+│   ├── docker-compose.yaml
+│   ├── images
+│   │   ├── base
+│   │   │   └── Dockerfile
+│   │   ├── doom
+│   │   │   └── Dockerfile
+│   │   └── projects
+│   │       └── Dockerfile
+│   ├── PROJECT.yaml
+│   └── README.org
+└── README.org
+#+end_src
+
+Use the provided PROJECT.yaml file for automatic installation. Seen here is a more
+detailed example of the Project specification from [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], with
+file-paths updated for vscode devcontainer use.
+
+#+begin_src yaml :tangle /tmp/PROJECT.yaml
+name: "Declarative Project Mode"
+root-directory: "/home/vscode/workspaces"
+required-resources:
+  - README.org
+deps:
+  - src: https://github.com/cuttlefisch/declarative-project-mode
+    dest: Declarative-Project-Mode
+  - src: https://github.com/cuttlefisch/prototype-emacs-devcontainer
+    dest: Emacs-Enhanced-Devcontainers
+local-files:
+  - src: /workspaces/source/README.org
+    # (↑) src path is absolute
+    dest: README.org
+  - src: /workspaces/source/PROJECT.yaml
+  - src: ~/path/to/src
+    # (↑) home directory expansion works, evaluates to /home/vscode
+    dest: path/to/dest
+    # (↑) dest path relative to project root dir
+  - src: /path/to/src
+    # (↑) default dest is project root dir
+  - src: /path/to/README.org
+    dest: README.org
+#+end_src
+
 * Provided Images
-** Base
-Simple Emacs daemon with the [[https://github.com/radian-software/straight.el][straight.el]] package manager installed for simpler declarative
-configuration.
-
-example reference: ~emacs-devcontainer-base:latest~
-
-** Doom
-Emacs daemon with [[https://github.com/doomemacs/doomemacs][Doom Emacs]] installed. Useful for testing with more comforts, but needs
-review of how it obliterates ~init.el~.
-
-example reference: ~emacs-devcontainer-doom:latest~
-
 ** Projects
 Emacs daemon that installs a default project file at ~/workspaces/source/PROJECT.el~ or
 any projects installed while the daemon runs. Instructions on this will follow, but the
@@ -40,6 +94,18 @@ elisp call to do so is ~(declarative-project--install-project
 See the later section for declarative project mode details.
 
 example reference: ~emacs-devcontainer-projects:latest~
+
+** Base
+Simple Emacs daemon with the [[https://github.com/radian-software/straight.el][straight.el]] package manager installed for simpler declarative
+configuration.
+
+example reference: ~emacs-devcontainer-base:latest~
+
+** Doom
+Emacs daemon with [[https://github.com/doomemacs/doomemacs][Doom Emacs]] installed. Useful for testing with more comfort, but needs
+review of how it obliterates ~init.el~.
+
+example reference: ~emacs-devcontainer-doom:latest~
 
 * Declarative Project Mode
 This project serves as the base for devcontainer definitions generated through

@@ -1,4 +1,5 @@
 *.org
 !README.org
 *authinfo*
-config
+config/*authinfo*
+!config/AUTHINFO_EXAMPLE

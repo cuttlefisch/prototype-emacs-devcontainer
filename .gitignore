@@ -1,2 +1,4 @@
 *.org
 !README.org
+*authinfo*
+config

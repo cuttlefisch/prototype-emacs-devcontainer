@@ -1,10 +1,13 @@
 if [ ! -d "/home/vscode/.emacs.d" ]; then
-    mkdir "/home/vscode/.emacs.d"
+  mkdir "/home/vscode/.emacs.d"
 fi
 
 cat <<EOF >>/home/vscode/.emacs.d/early-init.el
 ;; Disable package.el in favor of straight.el
 (setq package-enable-at-startup nil)
+
+;; Read git authinfo
+(setq auth-sources '("/workspaces/source/authinfo"))
 EOF
 
 # Configure emacs daemon to run project installation at startup

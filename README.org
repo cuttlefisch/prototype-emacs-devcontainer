@@ -1,125 +1,132 @@
-* Emacs Devcontainer
-
-This experimental Docker image & its compose file stand up a VS Code devcontainer with the
-latest Emacs build running as a daemon. The intended use-case is an integrated Emacs/VS
-Code devcontainer experience, leveraging Emac's extensive existing workflow tooling to
-provide enhanced functionality around workspace management.
+* Emacs Dev Container
+This experimental Docker image & its compose file stand up a VS Code Dev Container with
+the latest Emacs build running as a daemon. The intended use-case is an integrated
+Emacs/VS Code Dev Container experience, leveraging Emacs's extensive existing workflow
+tooling to provide enhanced functionality around workspace management.
 
 *NOTE:* This project does not yet implement the [[https://containers.dev/implementors/spec/][Open Development Container Specification]].
 
 * Basic Usage
-
- - Update the ~volumes~ specification to the absolute path to this directory.
- - Open the ~.devcontainer~ configuration files in VS Code
- - [[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token][Create a personal access token]] for storage in ~config/authinfo~
-     - See ~config/AUTHINFO_EXAMPLE~ for the file format
-     - *Token is stored in plaintext at this stage of development.*
+Launch a Dev Container:
+ - Clone this repository
+ - Open the repository folder in VS Code
+ - Have some tea, fresh build & configuration takes several minutes.
+ - That's it! Use the workspace within VS Code or another Editor.
 
 By default ~PROJECT.yaml~ is installed via [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], providing a workspace
-to edit this repository, along with ~declarative-project-mode~'s.
+to edit this repository, along with the [[https://github.com/cuttlefisch/declarative-project-mode][source repository]] for ~declarative-project-mode~.
 
 Change to ~emacs-devcontainer-base~ or ~emacs-devcontainer-doom~ within
 ~.devcontainer/devcontainer.js~ to start with an empty workspace.
 
-* Install a Project
-Install an example project resulting in this development environment in a fresh
-devcontainer.
-#+begin_src bash :noeval
-vscode ➜ ~/workspaces $ tree
-.
-├── declarative-project-mode
-│   ├── declarative-project-mode.el
-│   ├── declarative-project-mode-test.el
-│   ├── LICENSE
-│   ├── README.org
-│   └── test
-│       ├── local-file.txt
-│       ├── symlink-target.txt
-│       ├── test-file-present.txt
-│       └── test-project.yaml
-├── PROJECT.yaml
-├── prototype-emacs-devcontainer
-│   ├── build-resources
-│   │   ├── install-base.sh
-│   │   └── install-projects.sh
-│   ├── docker-compose.yaml
-│   ├── images
-│   │   ├── base
-│   │   │   └── Dockerfile
-│   │   ├── doom
-│   │   │   └── Dockerfile
-│   │   └── projects
-│   │       └── Dockerfile
-│   ├── PROJECT.yaml
-│   └── README.org
-└── README.org
+* Use without VS Code
+Simply launch the container with docker-compose and connect to the new container to edit.
+However, note that there are currently no additional features available for other editors.
+
+#+begin_src sh :noeval
+docker-compose up emacs-devcontainer-projects
 #+end_src
 
-Use the provided PROJECT.yaml file for automatic installation. Seen here is a more
-detailed example of the Project specification from [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], with
-file-paths updated for vscode devcontainer use.
+* Install a Project
+Install an example project in a fresh Dev Container using the provided example
+~PROJECT.yaml~ file. Seen here is a more detailed example of the Project specification
+from [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], with file-paths updated for VS Code Dev Containers.
 
-#+begin_src yaml :tangle /tmp/PROJECT.yaml
-name: "Declarative Project Mode"
+#+begin_src yaml
+name: "Emacs-Enhanced Dev Containers"
 root-directory: "/home/vscode/workspaces"
-required-resources:
-  - README.org
 deps:
   - src: https://github.com/cuttlefisch/declarative-project-mode
-    dest: Declarative-Project-Mode
   - src: https://github.com/cuttlefisch/prototype-emacs-devcontainer
-    dest: Emacs-Enhanced-Devcontainers
 local-files:
   - src: /workspaces/source/README.org
-    # (↑) src path is absolute
     dest: README.org
   - src: /workspaces/source/PROJECT.yaml
-  - src: ~/path/to/src
-    # (↑) home directory expansion works, evaluates to /home/vscode
-    dest: path/to/dest
-    # (↑) dest path relative to project root dir
-  - src: /path/to/src
-    # (↑) default dest is project root dir
-  - src: /path/to/README.org
-    dest: README.org
+required-resources:
+  - README.org
 #+end_src
+
+After launching the Dev Container we have the following ~/home/vscode/workspaces~:
+#+begin_src
+/home/vscode/workspaces/
+|-- PROJECT.yaml
+|-- README.org
+|-- declarative-project-mode
+|   |-- CODEOWNERS
+|   |-- LICENSE
+|   |-- README.org
+|   |-- declarative-project-mode-test.el
+|   |-- declarative-project-mode.el
+|   `-- test
+|       |-- local-file.txt
+|       |-- symlink-target.txt
+|       |-- test-file-present.txt
+|       `-- test-project.yaml
+`-- prototype-emacs-devcontainer
+    |-- CODEOWNERS
+    |-- PROJECT.yaml
+    |-- README.org
+    |-- build-resources
+    |   |-- install-base.sh
+    |   `-- install-projects.sh
+    |-- config
+    |   `-- AUTHINFO_EXAMPLE
+    |-- docker-compose.yaml
+    `-- images
+        |-- base
+        |   `-- Dockerfile
+        |-- doom
+        |   `-- Dockerfile
+        `-- projects
+            `-- Dockerfile
+#+end_src
+
+*NOTE:*
+ - Only HTTPS git urls are currently supported.
+     - This avoids complexity around ssh-agent forwarding, while supporting private
+       repositories using HTTPS urls.
+ - Symlinks won't work for Dev Containers, use ~local-files~ to specify resources to copy
+   into the Dev Container's workspace.
+
 
 * Provided Images
 ** Projects
-Emacs daemon that installs a default project file at ~/workspaces/source/PROJECT.el~ or
-any projects installed while the daemon runs. Instructions on this will follow, but the
-elisp call to do so is ~(declarative-project--install-project
-"/workspaces/source/PROJECT.el")~ substituting the desired path for the default.
+This image launches with an Emacs daemon that installs a default project file defined at
+~/workspaces/source/PROJECT.el~.
+
+It's possible to install a project directly with elisp like so:
+~(declarative-project--install-project-from-file "/workspaces/source/PROJECT.el")~
+(substituting the desired path for the default path shown).
 
 See the later section for declarative project mode details.
 
-example reference: ~emacs-devcontainer-projects:latest~
+Image: ~emacs-devcontainer-projects:latest~
 
 ** Base
-Simple Emacs daemon with the [[https://github.com/radian-software/straight.el][straight.el]] package manager installed for simpler declarative
+Simple Emacs daemon with the [[https://github.com/radian-software/straight.el][straight.el]] package manager installed for simple declarative
 configuration.
 
-example reference: ~emacs-devcontainer-base:latest~
+Image: ~emacs-devcontainer-base:latest~
 
 ** Doom
 Emacs daemon with [[https://github.com/doomemacs/doomemacs][Doom Emacs]] installed. Useful for testing with more comfort, but needs
 review of how it obliterates ~init.el~.
 
-example reference: ~emacs-devcontainer-doom:latest~
+Image: ~emacs-devcontainer-doom:latest~
 
 * Declarative Project Mode
-This project serves as the base for devcontainer definitions generated through
+This project serves as the base for Dev Container definitions generated through
 [[https://github.com/cuttlefisch/declarative-project-mode][declarative-project-mode]], a global mode that allows Emacs to install generalized
-"projects" that create a reproducable development environment.
+"projects" that create a reproducible development environment.
 
-Integration with devcontainers means installation & maintenance of projects via Emacs
-becomes a matter of calling elisp commands either via command-line or another conventient
-interface, and VS Code users can gain many benefits of emac's extensibility without the
-complexity of configuring, running, and maintianing it themselves.
+Integration with Dev Containers means installation & maintenance of projects via Emacs
+becomes a matter of calling elisp commands either via command-line or another convenient
+interface, and VS Code users can gain many benefits of Emacs's extensibility without the
+complexity of configuring, running, and maintaining it themselves.
 
-*But!* The resulting configuration serves as a starting point for reproducable
-containerized Emacs workspaces via devcontainers in the same manner. Declarative Project
-Mode will likely generate an Emacs-specific devcontainer configuration as the project
+*But!* The resulting configuration serves as a starting point for reproducible
+containerized Emacs workspaces via Dev Containers in the same manner. Declarative Project
+Mode will likely generate an Emacs-specific Dev Container configuration as the project
 matures.
 
 * Resources

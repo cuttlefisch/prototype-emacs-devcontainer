@@ -24,7 +24,7 @@ Change to ~emacs-devcontainer-base~ or ~emacs-devcontainer-doom~ within
 * Install a Project
 Install an example project resulting in this development environment in a fresh
 devcontainer.
-#+begin_src bash
+#+begin_src bash :noeval
 vscode ➜ ~/workspaces $ tree
 .
 ├── declarative-project-mode
